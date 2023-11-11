@@ -4,11 +4,13 @@ import { performance } from 'perf_hooks';
 import EventEmitter from 'events';
 
 /**
- * Function to perform a TCP "ping" to a given host and port, with a specified timeout, for a number of cycles.
- * @param {string} host - The host or IP address to ping.
- * @param {number} port - The TCP port to connect to.
- * @param {number} timeout - The timeout in milliseconds.
- * @param {number} cycles - The number of ping cycles. If set to -1, it will ping indefinitely.
+ * Performs a TCP "ping" to a specified host and an array of ports. Each ping attempt is timed with a specified timeout and can be repeated for a given number of cycles.
+ *
+ * @param {string} host - The host or IP address to be pinged.
+ * @param {number[]} [ports=[80]] - An array of TCP ports to connect to. Defaults to port 80 if not specified.
+ * @param {number} [timeout=5000] - The timeout for each ping attempt in milliseconds. Defaults to 5000ms.
+ * @param {number} [cycles=4] - The number of ping cycles to perform for each port. Set to -1 for indefinite pinging. Defaults to 4 cycles.
+ * @returns {EventEmitter} - An EventEmitter instance that emits 'data' events for each ping result and a 'complete' event when all pings are done.
  */
 export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
 	const emitter = new EventEmitter();
@@ -18,8 +20,10 @@ export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
 		let cycleCount = 0;
 
 		const pingCycle = () => {
+			// Check if the set number of cycles is completed
 			if (cycles !== -1 && cycleCount >= cycles) {
 				completedPorts.add(port);
+				// Emit a 'complete' event when all ports are done
 				if (completedPorts.size === ports.length) {
 					emitter.emit('complete', `Completed ${cycles} ping cycles to ${host} on all ports`);
 				}
