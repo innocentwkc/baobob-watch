@@ -6,23 +6,21 @@ const app = express();
 app.use(express.json());
 
 app.get('/ping', (req, res) => {
-    const { host, ports = '80', timeout, cycles } = req.query; // Default to port 80 if ports not provided
-
-    // Parsing multiple ports from the query parameter
+    const { host, ports = '80', timeout, cycles } = req.query;
     const parsedPorts = ports.split(',').map(port => parseInt(port.trim()));
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    
+
     const emitter = tcpPing(host, parsedPorts, parseInt(timeout), parseInt(cycles));
     emitter.on('data', (data) => {
         res.write(`data: ${data}\n\n`);
     });
 
+    // You might need more sophisticated logic to handle the completion of all ports
     emitter.on('complete', (message) => {
         res.write(`data: ${message}\n\n`);
-        res.end();
     });
 });
 
