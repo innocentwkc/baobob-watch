@@ -18,9 +18,9 @@ app.get('/ping', (req, res) => {
     res.write(`data: ${data}\n\n`);
   });
 
-  // You might need more sophisticated logic to handle the completion of all ports
   emitter.on('complete', (message) => {
     res.write(`data: ${message}\n\n`);
+    res.end();
   });
 });
 

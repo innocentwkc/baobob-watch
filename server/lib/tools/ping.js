@@ -12,13 +12,17 @@ import EventEmitter from 'events';
  */
 export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
 	const emitter = new EventEmitter();
+	let completedPorts = new Set();
 
 	ports.forEach(port => {
 		let cycleCount = 0;
 
 		const pingCycle = () => {
 			if (cycles !== -1 && cycleCount >= cycles) {
-				emitter.emit('complete', `Completed ${cycles} ping cycles to ${host}:${port}`);
+				completedPorts.add(port);
+				if (completedPorts.size === ports.length) {
+					emitter.emit('complete', `Completed ${cycles} ping cycles to ${host} on all ports`);
+				}
 				return;
 			}
 
