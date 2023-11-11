@@ -11,46 +11,46 @@ import EventEmitter from 'events';
  * @param {number} cycles - The number of ping cycles. If set to -1, it will ping indefinitely.
  */
 export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
-    const emitter = new EventEmitter();
+	const emitter = new EventEmitter();
 
-    ports.forEach(port => {
-        let cycleCount = 0;
+	ports.forEach(port => {
+		let cycleCount = 0;
 
-        const pingCycle = () => {
-            if (cycles !== -1 && cycleCount >= cycles) {
-                emitter.emit('complete', `Completed ${cycles} ping cycles to ${host}:${port}`);
-                return;
-            }
+		const pingCycle = () => {
+			if (cycles !== -1 && cycleCount >= cycles) {
+				emitter.emit('complete', `Completed ${cycles} ping cycles to ${host}:${port}`);
+				return;
+			}
 
-            cycleCount++;
-            const startTime = performance.now();
-            const socket = new net.Socket();
-            socket.setTimeout(timeout);
+			cycleCount++;
+			const startTime = performance.now();
+			const socket = new net.Socket();
+			socket.setTimeout(timeout);
 
-            socket.on('connect', () => {
-                const endTime = performance.now();
-                emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} successful. Time: ${Math.round(endTime - startTime)}ms`);
-                socket.destroy();
-                setTimeout(pingCycle, 1000);
-            });
+			socket.on('connect', () => {
+				const endTime = performance.now();
+				emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} successful. Time: ${Math.round(endTime - startTime)}ms`);
+				socket.destroy();
+				setTimeout(pingCycle, 1000);
+			});
 
-            socket.on('timeout', () => {
-                emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} timed out.`);
-                socket.destroy();
-                setTimeout(pingCycle, 1000);
-            });
+			socket.on('timeout', () => {
+				emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} timed out.`);
+				socket.destroy();
+				setTimeout(pingCycle, 1000);
+			});
 
-            socket.on('error', (error) => {
-                emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} failed: ${error.message}`);
-                socket.destroy();
-                setTimeout(pingCycle, 1000);
-            });
+			socket.on('error', (error) => {
+				emitter.emit('data', `TCP Ping #${cycleCount} to ${host}:${port} failed: ${error.message}`);
+				socket.destroy();
+				setTimeout(pingCycle, 1000);
+			});
 
-            socket.connect(port, host);
-        };
+			socket.connect(port, host);
+		};
 
-        pingCycle();
-    });
+		pingCycle();
+	});
 
-    return emitter;
+	return emitter;
 }
