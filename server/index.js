@@ -1,5 +1,6 @@
 // index.js
 import express from 'express';
+import cors from 'cors';
 import { tcpPing } from './lib/tools/tcpPing.js';
 import icmpPing from './lib/tools/icmpPing.js';
 
@@ -8,6 +9,7 @@ import icmpPing from './lib/tools/icmpPing.js';
  */
 const app = express();
 app.use(express.json());
+app.use(cors());  // Enable CORS for all routes
 
 /**
  * Route to perform a TCP ping.
@@ -55,6 +57,8 @@ app.get('/tcp-ping', (req, res) => {
 app.get('/icmp-ping', (req, res) => {
   // Extract parameters from the query string
   const { host, timeout, count } = req.query;
+
+  //TODO: fix cors ping for 192.168.1.1 
 
   // Parse the timeout parameter, default to 5000 milliseconds if not provided or invalid
   const parsedTimeout = parseInt(timeout) || 5000;
