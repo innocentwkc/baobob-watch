@@ -1,4 +1,4 @@
-// ping.js
+// tcp-ping.js
 import net from 'net';
 import { performance } from 'perf_hooks';
 import EventEmitter from 'events';
@@ -12,7 +12,7 @@ import EventEmitter from 'events';
  * @param {number} [cycles=4] - The number of ping cycles to perform for each port. Set to -1 for indefinite pinging. Defaults to 4 cycles.
  * @returns {EventEmitter} - An EventEmitter instance that emits 'data' events for each ping result and a 'complete' event when all pings are done.
  */
-export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
+function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
 	const emitter = new EventEmitter();
 	let completedPorts = new Set();
 
@@ -62,3 +62,5 @@ export function tcpPing(host, ports = [80], timeout = 5000, cycles = 4) {
 
 	return emitter;
 }
+
+export default tcpPing;
