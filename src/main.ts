@@ -1,4 +1,6 @@
-import './assets/main.css'
+// import './assets/main.css'
+// Import Tailwind CSS file
+import './assets/css/tailwind.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
