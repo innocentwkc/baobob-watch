@@ -1,0 +1,28 @@
+{
+  "name": "baobob-watch",
+  "version": "1.0.0",
+  "description": "Baobob watch simple networking tools tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "keywords": [
+    "networking",
+    "tools"
+  ],
+  "author": "innocentwkc",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1",
+    "joi": "^17.13.3",
+    "ping": "^0.4.4",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.15.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3"
+  }
+}
