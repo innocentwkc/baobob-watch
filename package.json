@@ -3,12 +3,32 @@
   "version": "1.0.0",
   "description": "Baobob watch simple networking tools tools",
   "main": "index.js",
+  "workspaces": [
+    "tools/*"
+  ],
   "scripts": {
-    "test": "node test"
+    "start": "node scripts/start.js",
+    "start:ping": "npm run start -w @baobob-watch/ping",
+    "start:traceroute": "npm run start -w @baobob-watch/traceroute",
+    "dev": "node scripts/dev.js",
+    "dev:ping": "npm run dev -w @baobob-watch/ping",
+    "dev:traceroute": "npm run dev -w @baobob-watch/traceroute",
+    "test": "npm run test --workspaces --if-present",
+    "test:ping": "npm run test -w @baobob-watch/ping",
+    "test:traceroute": "npm run test -w @baobob-watch/traceroute",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "clean": "rm -rf node_modules && npm run clean --workspaces",
+    "bootstrap": "node scripts/bootstrap.js"
   },
   "keywords": [
     "networking",
-    "tools"
+    "tools",
+    "network",
+    "monitoring",
+    "diagnostics",
+    "ping",
+    "traceroute"
   ],
   "author": "innocentwkc",
   "license": "MIT",
@@ -23,6 +43,14 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
   }
 }

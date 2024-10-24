@@ -1,0 +1,19 @@
+meta {
+  name: Ping Test2
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/ping/start
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"ip":"8.8.8.8","timeout":1000,"packetSize":32,"duration":60000}
+}
